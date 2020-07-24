@@ -1,11 +1,12 @@
 import express from "express";
-import { beer } from "./routes";
+import { auth, beer } from "./routes";
 
 export const createApp = () => {
   const app = express();
 
   app.use(express.json());
 
+  app.use("/api/auth", auth);
   app.use("/api", beer);
 
   app.use((error, req, res, next) => {

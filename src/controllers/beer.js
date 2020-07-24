@@ -50,7 +50,7 @@ export const createBeer = (req, res, next) => {
     .save()
     .then(() => {
       res.status(201).json({
-        message: "Beer created successfully!",
+        message: "Beer created successfully.",
         beer,
       });
     })
@@ -113,7 +113,7 @@ export const updateBeer = (req, res, next) => {
     .then((result) => {
       res
         .status(200)
-        .json({ message: "Beer updated successfully!", beer: result });
+        .json({ message: "Beer updated successfully.", beer: result });
     })
     .catch((err) => {
       if (!err.statusCode) err.statusCode = 500;
