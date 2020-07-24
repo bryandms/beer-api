@@ -1,14 +1,12 @@
-if (process.env.NODE_ENV !== "production") require("dotenv").config();
+import mongoose from "mongoose";
+import { DB_URI, DB_OPTIONS, PORT } from "./src/config";
+import { createApp } from "./src/app";
 
-import express from "express";
+const app = createApp();
 
-const PORT = process.env.PORT || 8080;
-const app = express();
-
-app.get("/", (req, res) => {
-  res.send("Beer API");
-});
-
-app.listen(PORT, () => {
-  console.log(`Server listening on http://localhost:${PORT}`);
-});
+mongoose
+  .connect(DB_URI, DB_OPTIONS)
+  .then(() =>
+    app.listen(PORT, () => console.log(`Server listening on port ${PORT}`))
+  )
+  .catch((err) => console.log(err));
