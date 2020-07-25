@@ -1,13 +1,7 @@
 import { Router } from "express";
 import { body } from "express-validator";
 import { isAuth } from "../middleware";
-import {
-  getBeers,
-  createBeer,
-  getBeer,
-  updateBeer,
-  deleteBeer,
-} from "../controllers";
+import { getBeers, createBeer, getBeer, updateBeer } from "../controllers";
 
 const router = Router();
 
@@ -32,8 +26,5 @@ router.put(
   [body("type").not().isEmpty().trim(), body("brand").not().isEmpty().trim()],
   updateBeer
 );
-
-// DELETE /api/beers/:beerId
-router.delete("/beers/:beerId", isAuth, deleteBeer);
 
 export { router as beer };

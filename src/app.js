@@ -1,5 +1,5 @@
 import express from "express";
-import { auth, beer } from "./routes";
+import { auth, beer, consumption } from "./routes";
 
 export const createApp = () => {
   const app = express();
@@ -7,7 +7,10 @@ export const createApp = () => {
   app.use(express.json());
 
   app.use("/api/auth", auth);
+
   app.use("/api", beer);
+
+  app.use("/api", consumption);
 
   app.use((error, req, res, next) => {
     console.log(error);

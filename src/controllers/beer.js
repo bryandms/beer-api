@@ -65,6 +65,7 @@ export const getBeer = (req, res, next) => {
   const beerId = req.params.beerId;
 
   Beer.findById(beerId)
+    .populate("consumptions")
     .then((beer) => {
       if (!beer) {
         const error = new Error("Could not find beer.");
@@ -73,7 +74,17 @@ export const getBeer = (req, res, next) => {
         throw error;
       }
 
-      res.status(200).json({ message: "Beer fetched.", beer });
+      const getTotalConsumed = (total, consumption) => {
+        return (
+          total + (consumption.user == req.userId ? consumption.quantity : 0)
+        );
+      };
+
+      let newBeer = beer._doc;
+      newBeer.totalConsumed = beer.consumptions.reduce(getTotalConsumed, 0);
+      delete newBeer.consumptions;
+
+      res.status(200).json({ message: "Beer fetched.", beer: newBeer });
     })
     .catch((err) => {
       if (!err.statusCode) err.statusCode = 500;
@@ -114,30 +125,6 @@ export const updateBeer = (req, res, next) => {
       res
         .status(200)
         .json({ message: "Beer updated successfully.", beer: result });
-    })
-    .catch((err) => {
-      if (!err.statusCode) err.statusCode = 500;
-
-      next(err);
-    });
-};
-
-export const deleteBeer = (req, res, next) => {
-  const beerId = req.params.beerId;
-
-  Beer.findById(beerId)
-    .then((beer) => {
-      if (!beer) {
-        const error = new Error("Could not find beer.");
-        error.statusCode = 404;
-
-        throw error;
-      }
-
-      return Beer.findByIdAndRemove(beerId);
-    })
-    .then(() => {
-      res.status(200).json({ message: "Deleted beer successfully." });
     })
     .catch((err) => {
       if (!err.statusCode) err.statusCode = 500;

@@ -15,6 +15,12 @@ const beerSchema = new Schema(
       type: Number,
       default: 0,
     },
+    consumptions: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Consumption",
+      },
+    ],
   },
   { timestamps: true }
 );
