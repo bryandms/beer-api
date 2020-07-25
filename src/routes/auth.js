@@ -18,8 +18,11 @@ router.post(
         })
       )
       .normalizeEmail(),
-    body("password").trim().isLength({ min: 6 }),
-    body("name").trim().not().isEmpty(),
+    body("password")
+      .trim()
+      .isLength({ min: 6 })
+      .withMessage("The password must be at least 6 characters."),
+    body("name").trim().not().isEmpty().withMessage("The name is required."),
   ],
   signup
 );

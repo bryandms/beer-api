@@ -35,6 +35,7 @@ export const createBeer = (req, res, next) => {
   if (!errors.isEmpty()) {
     const error = new Error("Could not create beer.");
     error.statusCode = 422;
+    error.data = errors.array();
 
     throw error;
   }
@@ -100,6 +101,7 @@ export const updateBeer = (req, res, next) => {
   if (!errors.isEmpty()) {
     const error = new Error("Could not update beer.");
     error.statusCode = 422;
+    error.data = errors.array();
 
     throw error;
   }

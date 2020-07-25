@@ -12,7 +12,15 @@ router.get("/beers", isAuth, getBeers);
 router.post(
   "/beers",
   isAuth,
-  [body("type").not().isEmpty().trim(), body("brand").not().isEmpty().trim()],
+  [
+    body("type").not().isEmpty().trim().withMessage("The type is required."),
+    body("brand").not().isEmpty().trim().withMessage("The brand is required."),
+    body("alcoholPercentage")
+      .isInt({ gt: -1, lt: 101 })
+      .withMessage(
+        "The alcohol percentage must be greater than or equal to 0 and less than or equal to 100."
+      ),
+  ],
   createBeer
 );
 
@@ -23,7 +31,15 @@ router.get("/beers/:beerId", isAuth, getBeer);
 router.put(
   "/beers/:beerId",
   isAuth,
-  [body("type").not().isEmpty().trim(), body("brand").not().isEmpty().trim()],
+  [
+    body("type").not().isEmpty().trim().withMessage("The type is required."),
+    body("brand").not().isEmpty().trim().withMessage("The brand is required."),
+    body("alcoholPercentage")
+      .isInt({ gt: 0, lt: 100 })
+      .withMessage(
+        "The alcohol percentage must be greater than or equal to 0 and less than or equal to 100."
+      ),
+  ],
   updateBeer
 );
 
